@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <script>
+      const longrun = (ms) => {
+        console.log("start longrun");
+        const start = new Date();
+        while (new Date() - start < ms) {
+          // do nothing
+          //console.log("inside longrun")
+        }
+        console.log("end longrun");
+      };
+
+      const doLongWork = () => {
+        console.log("start logwork");
+        longrun(15000);
+        console.log("end end long work");
+      };
+      const doWork = () => {
+        const wrk = new Worker("webworker.js");
+        wrk.postMessage(10000);
+        wrk.onmessage = (event) =>
+          (document.querySelector("input").value = event.data);
+      };
+    </script>
+  </head>
+  <body>
+    <input type="text" value="Loading..." />
+    <input type="number" />
+    <button onclick="doWork()">Work</button>
+  </body>
+</html>

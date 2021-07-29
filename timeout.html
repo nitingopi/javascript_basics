@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <script>
+      const longrun = (ms) => {
+        console.log("start longrun");
+        const start = new Date();
+        while (new Date() - start < ms) {
+          // do nothing
+        }
+        console.log("end longrun");
+      };
+
+      const frozen = () => {
+        console.log("start frozen");
+        longrun(15000);
+        console.log("end frozen");
+      };
+
+      const notfrozen = () => {
+        console.log("start notfrozen");
+        setTimeout(longrun, 5000, 15000);
+        console.log("end notfrozen");
+      };
+
+      const promise = () => {
+        const pakka = new Promise((resolve, reject) => {
+          longrun(5000);
+          resolve(42);
+        });
+
+        pakka
+          .then((result) => {
+            console.log(`resolved ${result}`);
+            longrun(15000);
+          })
+          .catch((error) => console.log(`error ${error}`));
+        console.log("bye bye ");
+        longrun(5000);
+        console.log("final bye");
+      };
+    </script>
+  </head>
+  <body>
+    <input type="number" />
+    <button onclick="frozen()">Frozen</button>
+    <button onclick="notfrozen()">Not Frozen</button>
+    <button onclick="promise()">Promise</button>
+  </body>
+</html>
